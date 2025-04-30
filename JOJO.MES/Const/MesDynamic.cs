@@ -16,8 +16,14 @@ namespace JOJO.Mes.Const
         /// 程序名称
         /// </summary>
         public string ProduceName { get; set; } = "";
+        /// <summary>
+        /// B面还是T面
+        /// </summary>
         public string BottomTop { get; set; } = MesConst.Bottom;
-
+        /// <summary>
+        /// 当前模块是否使用
+        /// </summary>
+        public bool IsUse {  get; set; }=true;
         /// <summary>
         /// 子板Id
         /// </summary>
@@ -75,8 +81,13 @@ namespace JOJO.Mes.Const
         /// TP的数量
         /// </summary>
         public int TPNumber { get; set; } = 0;
-
+        /// <summary>
+        /// 登录用户名
+        /// </summary>
         public string LoginName { get; set; } = "";
+        /// <summary>
+        /// 登录用户密码
+        /// </summary>
         public string LoginPassword { get; set; } = "";
 
         /// <summary>

@@ -81,6 +81,7 @@
     <Compile Include="Client\DefaultMes.cs" />
     <Compile Include="Client\Mes1.cs" />
     <Compile Include="Client\Mes2.cs" />
+    <Compile Include="Client\Mes3.cs" />
     <Compile Include="CommModel\MesHttp.cs" />
     <Compile Include="CommModel\MesSocket.cs" />
     <Compile Include="CommModel\MesWebServe.cs" />

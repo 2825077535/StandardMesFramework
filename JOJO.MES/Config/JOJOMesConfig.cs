@@ -40,6 +40,7 @@ namespace JOJO.Mes.Config
 
         public CustomerConfig.Mes1 Mes1 { get; set; } = new CustomerConfig.Mes1();
         public CustomerConfig.Mes2 Mes2 { get; set; } = new CustomerConfig.Mes2();
+        public CustomerConfig.Mes3 Mes3 { get; set; } = new CustomerConfig.Mes3();
 
     }
 }
