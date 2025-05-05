@@ -65,7 +65,7 @@ namespace JOJO.Mes.CommModel
                         content = new StringContent(obj, Encoding.UTF8);
                         MesLog.Info("MesUrl数据上传：" + obj);
                         // 发送POST请求
-                        response = await Client.PostAsync(url, content);
+                        HttpResponseMessage response = await Client.PostAsync(url, content);
                         // 确保响应成功
                         if (response.IsSuccessStatusCode)
                         {

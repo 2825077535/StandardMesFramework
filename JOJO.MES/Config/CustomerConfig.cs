@@ -25,7 +25,6 @@ namespace JOJO.Mes.Config
         }
         public class Mes3
         {
-            public string Token { get; set; } = "";
             public int tecId { get; set; } = 0;
             public int workOrderId { get; set; } = 0;
             public int workOrderMaterielId { get; set; } = 0;

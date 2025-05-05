@@ -17,6 +17,22 @@ namespace JOJO.Mes.Const
         /// </summary>
         public string ProduceName { get; set; } = "";
         /// <summary>
+        /// OKNG图像存储路径
+        /// </summary>
+        public string OKNGImageSavePath { get; set; } = "";
+        /// <summary>
+        /// 当前使用的轨道ID
+        /// </summary>
+        public string TrackId { get; set; } = "";
+        /// <summary>
+        /// 整板高度
+        /// </summary>
+        public double BoardHeight { get; set; } = 0;
+        /// <summary>
+        /// 整板宽度
+        /// </summary>
+        public double BoardWidth { get; set; } = 0;
+        /// <summary>
         /// B面还是T面
         /// </summary>
         public string BottomTop { get; set; } = MesConst.Bottom;
@@ -52,6 +68,11 @@ namespace JOJO.Mes.Const
         /// 每个子板设备判断结果
         /// </summary>
         public Dictionary<string, string> MachineSubBoardResult { get; set; } = new Dictionary<string, string>();
+        /// <summary>
+        /// 每个子板的子板条码
+        /// </summary>
+        public Dictionary<string, string> SubBoardCodes { get; set; } = new Dictionary<string, string>();
+
         /// <summary>
         /// NG元件数量
         /// </summary>

@@ -16,6 +16,8 @@ namespace JOJO.Mes.Const
         /// <returns></returns>
         public object FindValueByPath(string[] path, int index = 0)
         {
+            if (this == null)
+                return null;
             if (index >= path.Length)
             {
                 return this.MesValue;
@@ -42,6 +44,8 @@ namespace JOJO.Mes.Const
         /// <returns></returns>
         public MesProcessData ModifyValueByPath(string[] path, object newValue, int index = 0)
         {
+            if (this == null)
+                return null;
             if (index >= path.Length)
             {
                 this.MesValue = newValue;
