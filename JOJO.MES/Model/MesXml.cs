@@ -16,28 +16,8 @@ namespace JOJO.Mes.Model
 {
     internal class MesXml
     {
+        public const string _XmlAttribute = nameof(XmlAttribute);
 
-        /// <summary>
-        /// 不带反馈的发送信息
-        /// </summary>
-        /// <param name="socket"></param>
-        /// <param name="obj"></param>
-        public static async void SendObjectAsXml(Socket socket, string xmlString)
-        {
-            try
-            {
-                byte[] xmlBytes = Encoding.UTF8.GetBytes(xmlString);
-                await Task.Run(() =>
-                {
-                    // 通过Socket发送数据
-                    socket.Send(xmlBytes, 0, xmlBytes.Length, SocketFlags.None);
-                });
-            }
-            catch (Exception ex)
-            {
-                MesLog.Error("发送不带反馈的Socket数据失败：" + ex.ToString());
-            }
-        }
         public static T DeserializeObject<T>(string Xml)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(T));
@@ -92,80 +72,56 @@ namespace JOJO.Mes.Model
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static string SerializeToXml(object obj)
+        public static XElement SerializeToXml(object obj)
         {
             try
             {
-                lock (Lock)
+                FieldInfo[] fields = obj.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                string Name = "";
+                Object Value = new object();
+                Dictionary<string, Dictionary<string, object>> Properties = new Dictionary<string, Dictionary<string, object>>();
+                if (fields[0].Name.Contains("Name"))
                 {
-                    StringWriter stringWriter = new StringWriter();
-
-                    using (XmlWriter xmlWriter = XmlWriter.Create(stringWriter))
-                    {
-                        //添加输入对象的头，
-                        xmlWriter.WriteStartDocument();
-                        FieldInfo[] fields = obj.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                        foreach (FieldInfo field in fields)
-                        {
-                            object fieldValue = field.GetValue(obj);
-                            string fieldName = field.Name;
-
-                            if (fieldValue != null)
-                            {
-                                Type valueType = fieldValue.GetType();
-                                if (valueType.IsPrimitive || valueType == typeof(string) || !valueType.IsArray)
-                                {
-                                    if (field.Name.Contains("MesValue"))
-                                    {
-                                        xmlWriter.WriteValue(fieldValue);
-                                    }
-                                    else if (field.Name.Contains("MesName"))
-                                    {
-                                        xmlWriter.WriteStartElement(fieldValue.ToString());
-                                        continue;
-                                    }
-                                    else
-                                    {
-                                        xmlWriter.WriteStartElement(field.FieldType.Name.ToString());
-                                        xmlWriter.WriteValue(fieldValue);
-                                        xmlWriter.WriteEndElement();
-                                        continue;
-                                    }
-                                    xmlWriter.WriteEndElement();
-
-                                }
-                                else if (valueType.IsArray)
-                                {
-
-                                    Array array = (Array)fieldValue;
-                                    foreach (object item in array)
-                                    {
-                                        if (item != null)
-                                        {
-                                            string subXml = SerializeToXml(item);
-                                            xmlWriter.WriteRaw(subXml);
-                                        }
-                                    }
-
-                                }
-                                else
-                                {
-                                    string subXml = SerializeToXml(fieldValue);
-                                    xmlWriter.WriteRaw(subXml);
-                                    string xml = xmlWriter.ToString();
-                                }
-                            }
-                        }
-                        //xmlWriter.WriteEndElement();
-                        xmlWriter.WriteEndDocument();
-                    }
-                    return stringWriter.ToString();
+                    Name = fields[0].GetValue(obj).ToString();
+                    Value = fields[1].GetValue(obj);
                 }
+                else
+                {
+                    Name = fields[1].GetValue(obj).ToString();
+                    Value = fields[0].GetValue(obj);
+                }
+                Properties = (Dictionary<string, Dictionary<string,object>>)fields[2].GetValue(obj);
+
+                XElement xmlWriter = new XElement(Name);
+                if (Value.GetType().IsArray)
+                {
+                    Array array = (Array)Value;
+                    foreach (object item in array)
+                    {
+                        if (item != null)
+                        {
+                            XElement subXml = SerializeToXml(item);
+                            xmlWriter.Add(subXml);
+                        }
+                    }
+                }
+                else
+                {
+                    if (Properties.ContainsKey(_XmlAttribute))
+                    {
+                        foreach (var item in Properties[_XmlAttribute])
+                        {
+                            xmlWriter.SetAttributeValue(item.Key, item.Value);
+                        }
+                    }
+                    xmlWriter.SetValue(Value);
+                }
+                return xmlWriter;
             }
             catch (Exception ex)
             {
-                MesLog.Error("序列化XML失败：" + ex.ToString());
-                return "";
+                MesLog.Error(ex.ToString());
+                return null;
             }
         }
         private static XElement RecursiveProcess(XElement element)

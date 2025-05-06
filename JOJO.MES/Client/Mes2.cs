@@ -631,7 +631,7 @@ namespace JOJO.Mes.Client
         }
         public void MesSend_Accept(MesProcessData Data)
         {
-            string data = MesXml.SerializeToXml(Data);
+            string data = MesXml.SerializeToXml(Data).ToString();
 
             data = Regex.Replace(data, @"<\?.*?\?>", "");
             //整理XMl的缩进

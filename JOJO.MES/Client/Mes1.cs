@@ -622,23 +622,7 @@ namespace JOJO.Mes.Client
         }
         public void MesSend_Accept(MesProcessData Data)
         {
-            string data = MesXml.SerializeToXml(Data);
-
-            data = Regex.Replace(data, @"<\?.*?\?>", "");
-            //整理XMl的缩进
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(data);
-
-            StringBuilder sb = new StringBuilder();
-            XmlWriterSettings settings = new XmlWriterSettings();
-            settings.Indent = true; // 设置缩进为 true
-            settings.IndentChars = "  "; // 设置缩进字符，这里使用两个空格
-
-            using (XmlWriter writer = XmlWriter.Create(sb, settings))
-            {
-                xmlDoc.Save(writer);
-            }
-            data = sb.ToString();
+            string data = MesXml.SerializeToXml(Data).ToString();
 
             if (!socket.handler.Connected)
             {

@@ -78,118 +78,62 @@ namespace JOJO.Mes.Model
 
         public static string Serialize(MesProcessData obj)
         {
-            var jsonBuilder = new System.Text.StringBuilder();
-            jsonBuilder.Append(SerializeToJson(obj));
-            int firstBracketIndex = jsonBuilder.ToString().IndexOf('[');
-            if (firstBracketIndex != -1)
+            var jsonBuilder = SerializeToJson(obj).Value.ToString();
+            if (jsonBuilder.StartsWith("[") && jsonBuilder.EndsWith("]"))
             {
-                jsonBuilder.Remove(firstBracketIndex, 1);
-            }
-
-            // 查找最后一个 ] 的索引
-            int lastBracketIndex = jsonBuilder.ToString().LastIndexOf(']');
-            if (lastBracketIndex != -1)
-            {
-                jsonBuilder.Remove(lastBracketIndex, 1);
+                // 删除第一个 [ 和最后一个 ]
+                jsonBuilder = jsonBuilder.Substring(1, jsonBuilder.Length - 2).Trim();
             }
             return jsonBuilder.ToString();
         }
-        public static string SerializeToJson(object obj)
+        public static JProperty SerializeToJson(object obj)
         {
             try
             {
                 lock (Lock)
                 {
+                    JProperty pairs;
                     var jsonBuilder = new System.Text.StringBuilder();
                     FieldInfo[] fields = obj.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                    bool isFirstField = true;
-
-                    foreach (FieldInfo field in fields)
+                    string Name = "";
+                    Object Value = new object();
+                    if (fields[0].Name.Contains("Name"))
                     {
-                        object fieldValue = field.GetValue(obj);
-                        string fieldName = field.Name;
-
-                        if (fieldValue != null)
-                        {
-                            Type valueType = fieldValue.GetType();
-
-                            if (!isFirstField)
-                            {
-                                jsonBuilder.Append(",");
-                            }
-
-                            if (valueType.IsPrimitive || valueType == typeof(string))
-                            {
-                                if (field.Name.Contains("MesValue"))
-                                {
-                                    if (valueType == typeof(string))
-                                    {
-                                        jsonBuilder.Append($"\"{fieldValue.ToString()}\"");
-                                    }
-                                    else
-                                    {
-                                        jsonBuilder.Append(fieldValue.ToString());
-                                    }
-                                }
-                                else if (field.Name.Contains("MesName"))
-                                {
-                                    if (fieldValue.ToString() == "")
-                                    {
-                                        continue;
-                                    }
-                                    jsonBuilder.Append($"\"{fieldValue.ToString()}\":");
-                                    isFirstField = true;
-                                    continue;
-                                }
-                                else
-                                {
-                                    jsonBuilder.Append($"\"{field.Name}\":");
-                                    if (valueType == typeof(string))
-                                    {
-                                        jsonBuilder.Append($"\"{fieldValue.ToString()}\"");
-                                    }
-                                    else
-                                    {
-                                        jsonBuilder.Append(fieldValue.ToString());
-                                    }
-                                }
-                            }
-                            else if (valueType.IsArray)
-                            {
-                                jsonBuilder.Append("[{");
-                                Array array = (Array)fieldValue;
-                                bool isFirstItem = true;
-                                foreach (object item in array)
-                                {
-                                    if (item != null)
-                                    {
-                                        if (!isFirstItem)
-                                        {
-                                            jsonBuilder.Append(",");
-                                        }
-                                        string subJson = SerializeToJson(item);
-                                        jsonBuilder.Append(subJson);
-                                        isFirstItem = false;
-                                    }
-                                }
-                                jsonBuilder.Append("}]");
-                            }
-                            else
-                            {
-                                jsonBuilder.Append($"\"{field.Name}\":");
-                                string subJson = SerializeToJson(fieldValue);
-                                jsonBuilder.Append(subJson);
-                            }
-
-                            isFirstField = false;
-                        }
+                        Name = fields[0].GetValue(obj).ToString();
+                        Value = fields[1].GetValue(obj);
                     }
-                    return jsonBuilder.ToString();
+                    else
+                    {
+                        Name = fields[1].GetValue(obj).ToString();
+                        Value = fields[0].GetValue(obj);
+                    }
+
+                    if (Value.GetType().IsArray)
+                    {
+                        Array array = (Array)Value;
+                        JArray array2 = new JArray();
+                        JObject obj1 = new JObject();
+                        foreach (object item in array)
+                        {
+                            if (item != null)
+                            {
+                                JProperty subJson = SerializeToJson(item);
+                                obj1.Add(subJson);
+                            }
+                        }
+                        array2.Add(obj1);
+                        pairs = new JProperty(Name, array2);
+                    }
+                    else
+                    {
+                        pairs = new JProperty(Name, Value);
+                    }
+                    return pairs;
                 }
             }
             catch (Exception ex)
             {
-                return "";
+                return null;
             }
         }
 
