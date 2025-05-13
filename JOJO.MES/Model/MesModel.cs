@@ -110,36 +110,6 @@ namespace JOJO.Mes.Model
             }); 
             return false;
         }
-
-
-        /// <summary>
-        /// 查找Mes控制设置的指令ID
-        /// </summary>
-        /// <param name="Data"></param>
-        /// <returns></returns>
-        public string FindDataCommandID(MesProcessData Data)
-        {
-            return (string)Data.FindValueByPath(new string[] { MesCommandID });
-        }
-        /// <summary>
-        /// 查找数据中是否有Mes控制设备的指令名称
-        /// </summary>
-        /// <param name="Data"></param>
-        /// <returns></returns>
-        public string FindDataMesMachineName(MesProcessData Data)
-        {
-            return (string)Data.FindValueByPath(new string[] { MesControllerMachineName });
-        }
-        /// <summary>
-        /// 查找数据中是否有Mes控制设备的指令值
-        /// </summary>
-        /// <param name="Data"></param>
-        /// <returns></returns>
-        public object FindDataMesCommandValue(MesProcessData Data)
-        {
-            return Data.FindValueByPath(new string[] { MesCommandValue });
-        }
-
         /// <summary>
         /// 设置函数执行状态
         /// </summary>

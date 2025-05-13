@@ -21,7 +21,16 @@ namespace JOJO.Mes.Client
     {
         MesModel MesModel=new MesModel();
         private MesHttp MesHttp=new MesHttp();
-        string Token = "";
+        // 或者完整属性实现
+        private string _token = "";
+        public string Token
+        {
+            get => _token;
+            set
+            {
+                _token = value;
+            }
+        }
         public Mes3 ()
         {
             MesHttp.MesUrlAddress = MesApp.Instance.JOJOMesConfig.MesAddress;
@@ -61,37 +70,37 @@ namespace JOJO.Mes.Client
                 MesProcessData data3 = new MesProcessData()
                 {
                     MesName = "tecId",
-                    MesValue = MesApp.Instance.JOJOMesConfig.Mes3.tecId
+                    MesValue = MesApp.Instance.JOJOMesConfig.Mes3.TecId
                 };
                 MesProcessData data4 = new MesProcessData()
                 {
                     MesName = "workOrderId",
-                    MesValue = MesApp.Instance.JOJOMesConfig.Mes3.workOrderId
+                    MesValue = MesApp.Instance.JOJOMesConfig.Mes3.WorkOrderId
                 };
                 MesProcessData data5 = new MesProcessData()
                 {
                     MesName = "workOrderMaterielId",
-                    MesValue = MesApp.Instance.JOJOMesConfig.Mes3.workOrderMaterielId
+                    MesValue = MesApp.Instance.JOJOMesConfig.Mes3.WorkOrderMaterielId
                 };
                 MesProcessData data6 = new MesProcessData()
                 {
                     MesName = "workId",
-                    MesValue = MesApp.Instance.JOJOMesConfig.Mes3.workId
+                    MesValue = MesApp.Instance.JOJOMesConfig.Mes3.WorkId
                 };
                 MesProcessData data7 = new MesProcessData()
                 {
                     MesName = "workShopId",
-                    MesValue = MesApp.Instance.JOJOMesConfig.Mes3.workShopId
+                    MesValue = MesApp.Instance.JOJOMesConfig.Mes3.WorkShopId
                 };
                 MesProcessData data8 = new MesProcessData()
                 {
                     MesName = "pullId",
-                    MesValue = MesApp.Instance.JOJOMesConfig.Mes3.pullId
+                    MesValue = MesApp.Instance.JOJOMesConfig.Mes3.PullId
                 };
                 MesProcessData data9 = new MesProcessData()
                 {
                     MesName = "equipmentId",
-                    MesValue = MesApp.Instance.JOJOMesConfig.Mes3.equipmentId
+                    MesValue = MesApp.Instance.JOJOMesConfig.Mes3.EquipmentId
                 };
                 datas.Add(data1);
                 datas.Add(data2);
@@ -160,7 +169,6 @@ namespace JOJO.Mes.Client
                         MesName = "token",
                         MesValue = Token,
                     });
-                    data = await MesSend(datas, dynamic);
                     break;
                 case "getWorkOrderList":
                     datas.Add( new MesProcessData()
@@ -171,9 +179,8 @@ namespace JOJO.Mes.Client
                     datas.Add(new MesProcessData()
                     {
                         MesName = "workOrderMaterielId",
-                        MesValue = MesApp.Instance.JOJOMesConfig.Mes3.workOrderMaterielId,
+                        MesValue = MesApp.Instance.JOJOMesConfig.Mes3.WorkOrderMaterielId,
                     });
-                    data = await MesSend(datas, dynamic);
                     break;
                 case "getMaterielList":
                     datas.Add(new MesProcessData()
@@ -184,9 +191,8 @@ namespace JOJO.Mes.Client
                     datas.Add(new MesProcessData()
                     {
                         MesName = "tecId",
-                        MesValue = MesApp.Instance.JOJOMesConfig.Mes3.tecId,
+                        MesValue = MesApp.Instance.JOJOMesConfig.Mes3.TecId,
                     });
-                    data = await MesSend(datas, dynamic);
                     break;
                 case "getWorkList":
                     datas.Add(new MesProcessData()
@@ -197,19 +203,18 @@ namespace JOJO.Mes.Client
                     datas.Add(new MesProcessData()
                     {
                         MesName = "workOrderMaterielId",
-                        MesValue = MesApp.Instance.JOJOMesConfig.Mes3.workOrderMaterielId,
+                        MesValue = MesApp.Instance.JOJOMesConfig.Mes3.WorkOrderMaterielId,
                     });
                     datas.Add(new MesProcessData()
                     {
                         MesName = "workOrderId",
-                        MesValue = MesApp.Instance.JOJOMesConfig.Mes3.workOrderId,
+                        MesValue = MesApp.Instance.JOJOMesConfig.Mes3.WorkOrderId,
                     });
                     datas.Add(new MesProcessData()
                     {
                         MesName = "tecId",
-                        MesValue = MesApp.Instance.JOJOMesConfig.Mes3.tecId,
+                        MesValue = MesApp.Instance.JOJOMesConfig.Mes3.TecId,
                     });
-                    data = await MesSend(datas, dynamic);
                     break;
                 case "getWorkShopList":
                     datas.Add(new MesProcessData()
@@ -217,7 +222,6 @@ namespace JOJO.Mes.Client
                         MesName = "token",
                         MesValue = Token,
                     });
-                    data = await MesSend(datas, dynamic);
                     break;
                 case "getPullList":
                     datas.Add(new MesProcessData()
@@ -228,9 +232,8 @@ namespace JOJO.Mes.Client
                     datas.Add(new MesProcessData()
                     {
                         MesName = "workShopId",
-                        MesValue = MesApp.Instance.JOJOMesConfig.Mes3.workShopId,
+                        MesValue = MesApp.Instance.JOJOMesConfig.Mes3.WorkShopId,
                     });
-                    data = await MesSend(datas, dynamic);
                     break;
                 case "getEquipmentList":
                     datas.Add(new MesProcessData()
@@ -238,7 +241,83 @@ namespace JOJO.Mes.Client
                         MesName = "token",
                         MesValue = Token,
                     });
-                    data = await MesSend(datas, dynamic);
+                    break;
+                default:
+                    break;
+            }
+            data = await MesSend(datas, dynamic);
+            object Datas=new object();
+            switch (MesInterface)
+            {
+                case "getTecList":
+                    Datas=data.FindValueByPath(new string[] { "data" });
+                    if (Datas is Array ArrayDatas1)
+                    {
+                        foreach (MesProcessData Data in ArrayDatas1)
+                        {
+                            MesApp.Instance.JOJOMesConfig.Mes3.TecIdList.Add(new CustomerConfig.Mes3.MesShow() { Name = Data.FindValueByPath(new string[] { "tec_name" }).ToString(),ID= int.Parse( Data.FindValueByPath(new string[] { "tec_id" }).ToString()) });
+                        }
+                    }
+                    break;
+                case "getWorkOrderList":
+                    Datas = data.FindValueByPath(new string[] { "data" });
+                    if (Datas is Array ArrayDatas2)
+                    {
+                        foreach (MesProcessData Data in ArrayDatas2)
+                        {
+                            MesApp.Instance.JOJOMesConfig.Mes3.WorkOrderIdList.Add(new CustomerConfig.Mes3.MesShow() { Name = Data.FindValueByPath(new string[] { "materiel_erp_code" }).ToString(), ID = int.Parse(Data.FindValueByPath(new string[] { "materiel_id" }).ToString()) });
+                        }
+                    }
+                    break;
+                case "getMaterielList":
+                    Datas = data.FindValueByPath(new string[] { "data" });
+                    if (Datas is Array ArrayDatas3)
+                    {
+                        foreach (MesProcessData Data in ArrayDatas3)
+                        {
+                            MesApp.Instance.JOJOMesConfig.Mes3.WorkOrderMaterielIdList.Add(new CustomerConfig.Mes3.MesShow() { Name = Data.FindValueByPath(new string[] { "work_order_nubmer" }).ToString(), ID = int.Parse(Data.FindValueByPath(new string[] { "work_order_id" }).ToString()) });
+                        }
+                    }
+                    break;
+                case "getWorkList":
+                    Datas = data.FindValueByPath(new string[] { "data" });
+                    if (Datas is Array ArrayDatas4)
+                    {
+                        foreach (MesProcessData Data in ArrayDatas4)
+                        {
+                            MesApp.Instance.JOJOMesConfig.Mes3.WorkIdList.Add(new CustomerConfig.Mes3.MesShow() { Name = Data.FindValueByPath(new string[] { "work_name" }).ToString(), ID = int.Parse(Data.FindValueByPath(new string[] { "work_id" }).ToString()) });
+                        }
+                    }
+                    break;
+                case "getWorkShopList":
+                    Datas = data.FindValueByPath(new string[] { "data" });
+                    if (Datas is Array ArrayDatas5)
+                    {
+                        foreach (MesProcessData Data in ArrayDatas5)
+                        {
+                            MesApp.Instance.JOJOMesConfig.Mes3.WorkShopIdList.Add(new CustomerConfig.Mes3.MesShow() { Name = Data.FindValueByPath(new string[] { "workshop_name" }).ToString(), ID = int.Parse(Data.FindValueByPath(new string[] { "workshop_id" }).ToString()) });
+                        }
+                    }
+                    break;
+                case "getPullList":
+                    Datas = data.FindValueByPath(new string[] { "data" });
+                    if (Datas is Array ArrayDatas6)
+                    {
+                        foreach (MesProcessData Data in ArrayDatas6)
+                        {
+                            MesApp.Instance.JOJOMesConfig.Mes3.WorkShopIdList.Add(new CustomerConfig.Mes3.MesShow() { Name = Data.FindValueByPath(new string[] { "label_name" }).ToString(), ID = int.Parse(Data.FindValueByPath(new string[] { "label_id" }).ToString()) });
+                        }
+                    }
+                    break;
+                case "getEquipmentList":
+                    Datas = data.FindValueByPath(new string[] { "data" });
+                    if (Datas is Array ArrayDatas7)
+                    {
+                        foreach (MesProcessData Data in ArrayDatas7)
+                        {
+                            MesApp.Instance.JOJOMesConfig.Mes3.WorkShopIdList.Add(new CustomerConfig.Mes3.MesShow() { Name = Data.FindValueByPath(new string[] { "equipment_name" }).ToString(), ID = int.Parse(Data.FindValueByPath(new string[] { "equipment_id" }).ToString()) });
+                        }
+                    }
                     break;
                 default:
                     break;
@@ -339,32 +418,32 @@ namespace JOJO.Mes.Client
             datas.Add(new MesProcessData()
             {
                 MesName = "tecId",
-                MesValue = MesApp.Instance.JOJOMesConfig.Mes3.tecId,
+                MesValue = MesApp.Instance.JOJOMesConfig.Mes3.TecId,
             });
             datas.Add(new MesProcessData()
             {
                 MesName = "workOrderMaterielId",
-                MesValue = MesApp.Instance.JOJOMesConfig.Mes3.workOrderMaterielId,
+                MesValue = MesApp.Instance.JOJOMesConfig.Mes3.WorkOrderMaterielId,
             });
             datas.Add(new MesProcessData()
             {
                 MesName = "workOrderId",
-                MesValue = MesApp.Instance.JOJOMesConfig.Mes3.workOrderId,
+                MesValue = MesApp.Instance.JOJOMesConfig.Mes3.WorkOrderId,
             });
             datas.Add(new MesProcessData()
             {
                 MesName = "workId",
-                MesValue = MesApp.Instance.JOJOMesConfig.Mes3.workId,
+                MesValue = MesApp.Instance.JOJOMesConfig.Mes3.WorkId,
             });
             datas.Add(new MesProcessData()
             {
                 MesName = "workShopId",
-                MesValue = MesApp.Instance.JOJOMesConfig.Mes3.workShopId,
+                MesValue = MesApp.Instance.JOJOMesConfig.Mes3.WorkShopId,
             });
             datas.Add(new MesProcessData()
             {
                 MesName = "pullId",
-                MesValue = MesApp.Instance.JOJOMesConfig.Mes3.pullId,
+                MesValue = MesApp.Instance.JOJOMesConfig.Mes3.PullId,
             });
             datas.Add(new MesProcessData()
             {
@@ -374,7 +453,7 @@ namespace JOJO.Mes.Client
             datas.Add(new MesProcessData()
             {
                 MesName = "equipmentId",
-                MesValue = MesApp.Instance.JOJOMesConfig.Mes3.equipmentId,
+                MesValue = MesApp.Instance.JOJOMesConfig.Mes3.EquipmentId,
             });
             List<MesProcessData> uploadData=new List<MesProcessData>();
             uploadData.Add(new MesProcessData()

@@ -3,23 +3,32 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:MesUI.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mes="clr-namespace:JOJO.Mes;assembly=JOJO.Mes"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:viewModels="clr-namespace:MesUI.ViewModels"
     d:DataContext="{d:DesignInstance viewModels:MesClientUIViewModel}"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    Width="450"
+    Height="800"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/MesUI;component/Resources/ComboBoxStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
-        <TabControl x:Name="MesTab" SelectedIndex="{Binding SelectedTabIndex}">
+        <TabControl x:Name="MesTab" SelectedIndex="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.SelectedTabIndex}">
             <TabItem
                 Width="200"
                 Height="24"
                 FontSize="15"
                 Header="请选择Mes厂商"
-                Visibility="{Binding IsShowSelectCustomer}">
+                Visibility="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.IsShowSelectCustomer}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
@@ -41,8 +50,8 @@
                                 Height="30"
                                 Margin="0,0,8,0"
                                 Cursor="IBeam"
-                                ItemsSource="{Binding Path=CustomerName}"
-                                Text="{Binding SelectCustomer, UpdateSourceTrigger=PropertyChanged}" />
+                                ItemsSource="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.CustomerName}"
+                                Text="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.SelectCustomer, UpdateSourceTrigger=PropertyChanged}" />
                         </Grid>
 
                         <Button
@@ -59,23 +68,28 @@
                 Width="200"
                 Height="24"
                 FontSize="15"
-                Header="{Binding SelectCustomer, UpdateSourceTrigger=PropertyChanged}"
-                Visibility="{Binding IsShowCustomer}">
-                <Grid Visibility="{Binding Mes1IsShowUIVisibility}">
+                Header="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.SelectCustomer, UpdateSourceTrigger=PropertyChanged}"
+                Visibility="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.Mes1.IsShowUIVisibility}">
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
                     <StackPanel>
-                        <Grid x:Name="通用标准Mes">
+                        <Grid>
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
                             <StackPanel>
-                                <Grid x:Name="是否开启Mes" Margin="8">
+                                <Grid Margin="8">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="200" />
                                         <ColumnDefinition Width="*" />
@@ -87,10 +101,10 @@
                                     <CheckBox
                                         Grid.Column="1"
                                         HorizontalAlignment="Left"
-                                        IsChecked="{Binding IsEnableMes, UpdateSourceTrigger=PropertyChanged}" />
+                                        IsChecked="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.IsEnableMes, UpdateSourceTrigger=PropertyChanged}" />
                                 </Grid>
 
-                                <Grid x:Name="Mes通讯地址" Margin="8">
+                                <Grid Margin="8">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="200" />
                                         <ColumnDefinition Width="*" />
@@ -104,10 +118,10 @@
                                         Height="30"
                                         Margin="0,0,8,0"
                                         Cursor="IBeam"
-                                        Text="{Binding MesAddress, UpdateSourceTrigger=PropertyChanged}" />
+                                        Text="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.MesAddress, UpdateSourceTrigger=PropertyChanged}" />
                                 </Grid>
 
-                                <Grid x:Name="Mes端口号" Margin="8">
+                                <Grid Margin="8">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="200" />
                                         <ColumnDefinition Width="*" />
@@ -121,11 +135,9 @@
                                         Height="30"
                                         Margin="0,0,8,0"
                                         Cursor="IBeam"
-                                        Text="{Binding Mes1Port, UpdateSourceTrigger=PropertyChanged}" />
+                                        Text="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.Port, UpdateSourceTrigger=PropertyChanged}" />
                                 </Grid>
-
-
-                                <Grid x:Name="Mes超时时间" Margin="8">
+                                <Grid Margin="8">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="200" />
                                         <ColumnDefinition Width="*" />
@@ -139,10 +151,10 @@
                                         Height="30"
                                         Margin="0,0,8,0"
                                         Cursor="IBeam"
-                                        Text="{Binding MesTimeOut, UpdateSourceTrigger=PropertyChanged}" />
+                                        Text="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.MesTimeOut, UpdateSourceTrigger=PropertyChanged}" />
                                 </Grid>
 
-                                <Grid x:Name="设备型号" Margin="8">
+                                <Grid Margin="8">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="200" />
                                         <ColumnDefinition Width="*" />
@@ -156,21 +168,9 @@
                                         Height="30"
                                         Margin="0,0,8,0"
                                         Cursor="IBeam"
-                                        Text="{Binding EquipmentID, UpdateSourceTrigger=PropertyChanged}" />
+                                        Text="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.EquipmentID, UpdateSourceTrigger=PropertyChanged}" />
                                 </Grid>
-                            </StackPanel>
-
-                        </Grid>
-                        <Grid x:Name="Mes1Mes" Visibility="{Binding Mes1IsShowUIVisibility}">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                            </Grid.RowDefinitions>
-
-                            <StackPanel>
-                                <Grid x:Name="线别名称" Margin="8">
+                                <Grid Margin="8">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="200" />
                                         <ColumnDefinition Width="*" />
@@ -184,10 +184,10 @@
                                         Height="30"
                                         Margin="0,0,8,0"
                                         Cursor="IBeam"
-                                        Text="{Binding Mes1LineName, UpdateSourceTrigger=PropertyChanged}" />
+                                        Text="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.Mes1.LineName, UpdateSourceTrigger=PropertyChanged}" />
                                 </Grid>
 
-                                <Grid x:Name="设备名称" Margin="8">
+                                <Grid Margin="8">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="200" />
                                         <ColumnDefinition Width="*" />
@@ -201,10 +201,10 @@
                                         Height="30"
                                         Margin="0,0,8,0"
                                         Cursor="IBeam"
-                                        Text="{Binding Mes1MachineName, UpdateSourceTrigger=PropertyChanged}" />
+                                        Text="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.Mes1.MachineName, UpdateSourceTrigger=PropertyChanged}" />
                                 </Grid>
 
-                                <Grid x:Name="站点名称" Margin="8">
+                                <Grid Margin="8">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="200" />
                                         <ColumnDefinition Width="*" />
@@ -218,7 +218,7 @@
                                         Height="30"
                                         Margin="0,0,8,0"
                                         Cursor="IBeam"
-                                        Text="{Binding Mes1StatueName, UpdateSourceTrigger=PropertyChanged}" />
+                                        Text="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.Mes1.StatueName, UpdateSourceTrigger=PropertyChanged}" />
                                 </Grid>
 
                                 <Grid Margin="8">
@@ -235,7 +235,374 @@
                                         Height="30"
                                         Margin="0,0,8,0"
                                         Cursor="IBeam"
-                                        Text="{Binding Mes1ReNumber, UpdateSourceTrigger=PropertyChanged}" />
+                                        Text="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.Mes1.ReNumber, UpdateSourceTrigger=PropertyChanged}" />
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem
+                Width="200"
+                Height="24"
+                FontSize="15"
+                Header="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.SelectCustomer, UpdateSourceTrigger=PropertyChanged}"
+                Visibility="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.Mes2.IsShowUIVisibility}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <StackPanel>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <StackPanel>
+                                <Grid Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Text="是否开启Mes：" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Left"
+                                        IsChecked="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.IsEnableMes, UpdateSourceTrigger=PropertyChanged}" />
+                                </Grid>
+
+                                <Grid Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Text="Mes通讯地址：" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Height="30"
+                                        Margin="0,0,8,0"
+                                        Cursor="IBeam"
+                                        Text="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.MesAddress, UpdateSourceTrigger=PropertyChanged}" />
+                                </Grid>
+
+                                <Grid Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Text="Mes端口号：" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Height="30"
+                                        Margin="0,0,8,0"
+                                        Cursor="IBeam"
+                                        Text="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.Port, UpdateSourceTrigger=PropertyChanged}" />
+                                </Grid>
+                                <Grid Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Text="Mes超时时间：" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Height="30"
+                                        Margin="0,0,8,0"
+                                        Cursor="IBeam"
+                                        Text="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.MesTimeOut, UpdateSourceTrigger=PropertyChanged}" />
+                                </Grid>
+
+                                <Grid Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Text="设备型号：" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Height="30"
+                                        Margin="0,0,8,0"
+                                        Cursor="IBeam"
+                                        Text="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.EquipmentID, UpdateSourceTrigger=PropertyChanged}" />
+                                </Grid>
+
+                                <Grid Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Text="站点名称：" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Height="30"
+                                        Margin="0,0,8,0"
+                                        Cursor="IBeam"
+                                        Text="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.Mes2.StatueName, UpdateSourceTrigger=PropertyChanged}" />
+                                </Grid>
+
+                                <Grid Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Text="Mes发送重试次数：" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Height="30"
+                                        Margin="0,0,8,0"
+                                        Cursor="IBeam"
+                                        Text="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.Mes2.ReNumber, UpdateSourceTrigger=PropertyChanged}" />
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem
+                Width="200"
+                Height="24"
+                FontSize="15"
+                Header="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.SelectCustomer, UpdateSourceTrigger=PropertyChanged}"
+                Visibility="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.Mes3.IsShowUIVisibility}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <StackPanel>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <StackPanel>
+                                <Grid Grid.Row="0" Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Text="是否开启Mes：" />
+                                    <CheckBox
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Left"
+                                        IsChecked="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.IsEnableMes, UpdateSourceTrigger=PropertyChanged}" />
+                                </Grid>
+
+                                <Grid Grid.Row="1" Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Text="Mes通讯地址：" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Height="30"
+                                        Margin="0,0,8,0"
+                                        Cursor="IBeam"
+                                        Text="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.MesAddress, UpdateSourceTrigger=PropertyChanged}" />
+                                </Grid>
+
+                                <Grid Grid.Row="2" Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Text="Mes超时时间：" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Height="30"
+                                        Margin="0,0,8,0"
+                                        Cursor="IBeam"
+                                        Text="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.MesTimeOut, UpdateSourceTrigger=PropertyChanged}" />
+                                </Grid>
+
+                                <Grid Grid.Row="3" Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Text="工艺名称：" />
+                                    <ComboBox
+                                        Name="Mes3TecId"
+                                        ItemsSource="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.Mes3.TecIdList, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource Mes3ComboBoxStyle}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="SelectionChanged">
+                                                <prism:InvokeCommandAction Command="{Binding SelectionChangedCommand_Mes3}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </ComboBox>
+                                </Grid>
+
+
+                                <Grid Grid.Row="4" Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Text="物料名称：" />
+                                    <ComboBox
+                                        Name="Mes3WorkOrderMaterielId"
+                                        ItemsSource="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.Mes3.WorkOrderMaterielIdList, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource Mes3ComboBoxStyle}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="SelectionChanged">
+                                                <prism:InvokeCommandAction Command="{Binding SelectionChangedCommand_Mes3}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </ComboBox>
+                                </Grid>
+
+                                <Grid Grid.Row="5" Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Text="工单名称：" />
+                                    <ComboBox
+                                        Name="Mes3WorkOrderId"
+                                        ItemsSource="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.Mes3.WorkOrderIdList, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource Mes3ComboBoxStyle}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="SelectionChanged">
+                                                <prism:InvokeCommandAction Command="{Binding SelectionChangedCommand_Mes3}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </ComboBox>
+                                </Grid>
+                                <Grid Grid.Row="6" Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Text="工序名称：" />
+                                    <ComboBox
+                                        Name="Mes3WorkId"
+                                        ItemsSource="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.Mes3.WorkIdList, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource Mes3ComboBoxStyle}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="SelectionChanged">
+                                                <prism:InvokeCommandAction Command="{Binding SelectionChangedCommand_Mes3}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </ComboBox>
+                                </Grid>
+                                <Grid Grid.Row="7" Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Text="车间名称：" />
+                                    <ComboBox
+                                        Name="Mes3WorkShopId"
+                                        ItemsSource="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.Mes3.WorkShopIdList, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource Mes3ComboBoxStyle}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="SelectionChanged">
+                                                <prism:InvokeCommandAction Command="{Binding SelectionChangedCommand_Mes3}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </ComboBox>
+                                </Grid>
+                                <Grid Grid.Row="8" Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Text="拉别名称：" />
+                                    <ComboBox
+                                        Name="Mes3PullId"
+                                        ItemsSource="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.Mes3.PullIdList, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource Mes3ComboBoxStyle}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="SelectionChanged">
+                                                <prism:InvokeCommandAction Command="{Binding SelectionChangedCommand_Mes3}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </ComboBox>
+                                </Grid>
+                                <Grid Grid.Row="9" Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Text="设备名称：" />
+                                    <ComboBox
+                                        Name="Mes3EquipmentId"
+                                        ItemsSource="{Binding Source={x:Static mes:MesApp.Instance}, Path=JOJOMesConfig.Mes3.EquipmentIdList, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource Mes3ComboBoxStyle}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="SelectionChanged">
+                                                <prism:InvokeCommandAction Command="{Binding SelectionChangedCommand_Mes3}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </ComboBox>
                                 </Grid>
                             </StackPanel>
                         </Grid>
@@ -243,6 +610,5 @@
                 </Grid>
             </TabItem>
         </TabControl>
-
     </Grid>
 </UserControl>

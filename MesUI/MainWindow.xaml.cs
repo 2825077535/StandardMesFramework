@@ -1,4 +1,9 @@
-﻿using System;
+﻿using DryIoc;
+using MesUI.Views;
+using Prism.DryIoc;
+using Prism.Ioc;
+using Prism.Services.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +28,15 @@ namespace MesUI
         public MainWindow()
         {
             InitializeComponent();
+        }
+        protected IContainer Container;
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Container = ContainerLocator.Container.GetContainer();
+
+            Container.Resolve<IDialogService>().ShowDialog(nameof(MesClientUIView), null, result =>
+            { });
         }
     }
 }

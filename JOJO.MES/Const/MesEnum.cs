@@ -79,8 +79,10 @@ namespace JOJO.Mes.Const
             None = -1,
             [Description("Mes1")]
             Mes1 = 1,
-            [Description("Mes1")]
+            [Description("Mes2")]
             Mes2 = 2,
+            [Description("Mes3")]
+            Mes3 = 3,
         }
         /// <summary>
         /// 获取枚举的Description值

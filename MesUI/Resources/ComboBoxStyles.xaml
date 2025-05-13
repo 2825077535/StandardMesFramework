@@ -1,0 +1,13 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:prism="http://prismlibrary.com/">
+
+    <Style x:Key="Mes3ComboBoxStyle" TargetType="ComboBox">
+        <Setter Property="Grid.Column" Value="1" />
+        <Setter Property="DisplayMemberPath" Value="Name" />
+        <Setter Property="SelectedValuePath" Value="ID" />
+        <Setter Property="IsReadOnly" Value="True"/>
+    </Style>
+</ResourceDictionary>

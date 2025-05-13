@@ -62,13 +62,14 @@ namespace JOJO.Mes.Model
                 }
                 else
                 {
+                    List<MesProcessData> Jdatas = new List<MesProcessData>();
                     foreach (var item1 in item.Value)
                     {
                         MesProcessData Jdata = new MesProcessData();
                         Jdata = TraverseJsonNodes((JObject)item1);
-                        Jdata.MesName = item.Key;
-                        datas.Add(Jdata);
+                        Jdatas.Add(Jdata);
                     }
+                    datas.Add(new MesProcessData() { MesName = item.Key, MesValue = Jdatas.ToArray() });
                 }
             }
             data.MesValue = datas.ToArray();
